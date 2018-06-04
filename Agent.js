@@ -4,18 +4,19 @@ class Agent {
         this.y = y;
         this.velocity = [0, 0];
         this.dead = false;
-        this.brain = tf.sequential();
-        this.brain.add(tf.layers.dense({ units: 8, inputShape: [4], activation: 'sigmoid' }));
-        this.brain.add(tf.layers.dense({ units: 4, activation: 'sigmoid' }));
-        this.brain.compile({
-            optimizer: tf.train.sgd(.5),
-            loss: tf.losses.meanSquaredError
+        tf.tidy(() => {
+            this.brain = tf.sequential();
+            this.brain.add(tf.layers.dense({ units: 8, inputShape: [4], activation: 'sigmoid' }));
+            this.brain.add(tf.layers.dense({ units: 4, activation: 'sigmoid' }));
+            this.brain.compile({
+                optimizer: tf.train.sgd(.5),
+                loss: tf.losses.meanSquaredError
+            });
         });
         if (weights) {
-            this.brain.setWeights(weights);
-            for (let i = 0; i < weights.length; i++) {
-                weights[i].dispose();
-            }
+            tf.tidy(() => {
+                this.brain.setWeights(weights);
+            });
         }
         var d = new Date();
         this.deathTime = d.getTime() + 30 * 1000;
