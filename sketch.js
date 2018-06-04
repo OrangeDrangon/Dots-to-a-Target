@@ -1,6 +1,6 @@
 let agents = new Array(100);
 let newAgents = new Array(100);
-const target = { x: 400, y: 400 };
+const target = { x: 100, y: 300 };
 function setup() {
     createCanvas(400, 400);
     background(0);
@@ -11,6 +11,7 @@ function setup() {
 
 function draw() {
     background(0);
+    point(target.x, target.y);
     let allDead = true;
     for (let i = 0; i < agents.length; i++) {
         agents[i].update();
@@ -70,5 +71,4 @@ function draw() {
     }
     strokeWeight(10);
     stroke(255, 0, 0);
-    point(target.x, target.y);
 }
